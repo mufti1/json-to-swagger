@@ -8,7 +8,12 @@ import (
 )
 
 func main() {
-	exampleData := []byte(`{"one":"test", "add":1, "arr":[1, 2], "s":["1", "2"]}`)
+	exampleData := []byte(`{"id": 123,
+	"sku_id": 12232322,
+	"retail_price": 110,
+	"name": "Jacket A",
+	"item_id": 1,
+	"is_refund": true}`)
 	var value interface{}
 
 	json.Unmarshal(exampleData, &value)
@@ -29,6 +34,8 @@ func converToYAML(oneLevelJSON map[string]interface{}) {
 			dataType = "string"
 		case int, int16, int32, int64, int8, float32, float64, uint, uint16, uint32, uint64, uint8:
 			dataType = "integer"
+		case bool:
+			dataType = "boolean"
 		case []interface{}:
 			temp := (v.([]interface{}))
 			var ex string
