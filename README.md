@@ -23,6 +23,9 @@ A simple tool to parse JSON schema to Swagger YAML Schema, this project initiate
 
 - Only work for 1 level json and array
 
+## Demo
+![](/demo/demo.gif)
+
 ## Contribution
 
 - Feel free to raise a PR!
