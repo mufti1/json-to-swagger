@@ -1,0 +1,12 @@
+{
+  "name": "Json to swagger schema",
+  "description": "Convert plain json to swagger schema",
+  "keywords": [
+    "json",
+    "yaml",
+    "swagger",
+    "convert"
+  ],
+  "website": "github.com/mufti1/json-to-swagger",
+  "repository": "github.com/mufti1/json-to-swagger"
+}
