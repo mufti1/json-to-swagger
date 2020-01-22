@@ -21,8 +21,7 @@ A simple tool to parse JSON schema to Swagger YAML Schema, this project initiate
 
 ## Limitations
 
-- Only work for multilevel json
-- Not work for array of json
+- No limitation I think
 
 ## Demo
 ![](/demo/demo.gif)
