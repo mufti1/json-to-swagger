@@ -8,16 +8,9 @@ A simple tool to parse JSON schema to Swagger YAML Schema, this project initiate
 
 ## How To Use
 
-- Open main.go files
-- Edit exampleData variable
-- Run with go run main.go
-- The result will show on the screen and save in your clipboard
-
-## Roadmap
-
-- Make it work for multiple level of json schema
-- Tuning CLI tools
-- Make Swagger parser as a Library
+- Run go run main.go
+- It will run on `3000` port
+- Make post request to `address:3000/convert` with request body `{ "json_schema": your json_schema }
 
 ## Limitations
 
