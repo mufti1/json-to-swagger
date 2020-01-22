@@ -18,7 +18,19 @@ func main() {
 		"test": 1,
 		"test-s": "a",
 		"bool": true,
-		"arr": [1, 2]
+		"arr": [1, 2],
+		"err": {
+			"test": 1,
+			"test-s": "a",
+			"bool": true,
+			"arr": [1, 2],
+			"aaa":{
+				"test": 1,
+				"test-s": "a",
+				"bool": true,
+				"arr": [1, 2]
+			}
+		}
 	}}`)
 	var value interface{}
 
@@ -65,7 +77,7 @@ func converToYAML(oneLevelJSON map[string]interface{}) {
 			properties := (v.(map[string]interface{}))
 			var dataProperties string
 			for k, v := range properties {
-				dataProperties += parse(k, v)
+				dataProperties += parse(k, v, 4, 6)
 			}
 			yamlSchema += fmt.Sprintf("%v:\n  type: object\n  properties:\n%v", k, dataProperties)
 		}
@@ -76,18 +88,26 @@ func converToYAML(oneLevelJSON map[string]interface{}) {
 	clipboard.WriteAll(yamlSchema)
 }
 
-func parse(key interface{}, value interface{}) string {
+func parse(key interface{}, value interface{}, indentationOne int, indentationTwo int) string {
+	var firstIndentation int = indentationOne
+	var secondIndentation int = indentationTwo
 	var yamlSchema string
 	switch value.(type) {
 	case string:
 		dataType := "string"
-		yamlSchema += fmt.Sprintf("    %v:\n      type: %v\n", key, dataType)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: %v\n",firstIndentation,"", key,secondIndentation, "", dataType)
+		firstIndentation += 2
+		secondIndentation += 2
 	case int, int16, int32, int64, int8, float32, float64, uint, uint16, uint32, uint64, uint8:
 		dataType := "integer"
-		yamlSchema += fmt.Sprintf("    %v:\n      type: %v\n", key, dataType)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: %v\n",firstIndentation,"", key,secondIndentation, "", dataType)
+		firstIndentation += 2
+		secondIndentation += 2
 	case bool:
 		dataType := "boolean"
-		yamlSchema += fmt.Sprintf("    %v:\n      type: %v\n", key, dataType)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: %v\n",firstIndentation,"", key,secondIndentation, "", dataType)
+		firstIndentation += 2
+		secondIndentation += 2
 	case []interface{}:
 		temp := (value.([]interface{}))
 		var ex string
@@ -102,15 +122,19 @@ func parse(key interface{}, value interface{}) string {
 			}
 		}
 
-		dataType := "array\n      items: {}\n      example:\n        - " + ex
-		yamlSchema += fmt.Sprintf("    %v:\n      type: %v\n", key, dataType)
+		dataType := fmt.Sprintf("array\n%*sitems: {}\n%*sexample:\n%*s  - %v",secondIndentation,"",secondIndentation,"",secondIndentation,"",ex)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: %v\n",firstIndentation,"", key,secondIndentation, "", dataType)
+		firstIndentation += 2
+		secondIndentation += 2
 	case map[string]interface{}:
 		properties := (value.(map[string]interface{}))
 		var dataProperties string
 		for k, v := range properties {
-			dataProperties += parse(k, v)
+			dataProperties += parse(k, v, firstIndentation+4, secondIndentation+4)
 		}
-		yamlSchema += fmt.Sprintf("%v:\n  type: object\n  properties:\n%v", key, dataProperties)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: object\n%*sproperties:\n%v",firstIndentation,"", key,secondIndentation,"", secondIndentation, "", dataProperties)
+		firstIndentation += 2
+		secondIndentation += 2
 	}
 
 	return yamlSchema
