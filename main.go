@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	clipboard "github.com/atotto/clipboard"
@@ -17,17 +18,22 @@ type jsonRequest struct {
 
 func main() {
 	routes := mux.NewRouter()
-	server := ":3000"
+	server := os.Getenv("PORT")
 
 	routes.HandleFunc("/convert", convertToSwagger).Methods("POST")
+	routes.HandleFunc("/ping", ping).Methods("GET")
 
 	log.Printf("server running on %v", server)
-	err := http.ListenAndServe(server, routes)
+	err := http.ListenAndServe(":"+server, routes)
 	if err != nil {
 		log.Fatalf("Unable to run http server: %v", err)
 	}
 
 	log.Println("Stopping API Service...")
+}
+
+func ping(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "pong")
 }
 
 func convertToSwagger(w http.ResponseWriter, r *http.Request) {
