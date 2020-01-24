@@ -12,6 +12,8 @@ A simple tool to parse JSON schema to Swagger YAML Schema, this project initiate
 - It will run on `3000` port
 - Make post request to `address:3000/convert` with request body `{ "json_schema": your json_schema }`
 - Server link [here](https://json-any.herokuapp.com/convert)
+- You can also use with this UI [here](https://json-to-swagger.netlify.com/)
+
 
 ## Limitations
 
