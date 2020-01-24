@@ -20,7 +20,7 @@ func main() {
 	routes := mux.NewRouter()
 	server := os.Getenv("PORT")
 
-	routes.HandleFunc("/convert", convertToSwagger).Methods("POST")
+	routes.HandleFunc("/convert", convertToSwagger).Methods("POST", "OPTIONS")
 	routes.HandleFunc("/ping", ping).Methods("GET")
 
 	log.Printf("server running on %v", server)
@@ -33,10 +33,18 @@ func main() {
 }
 
 func ping(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
+
 	fmt.Fprintf(w, "pong")
 }
 
 func convertToSwagger(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
+
 	decoder := json.NewDecoder(r.Body)
 	jsonSchema := jsonRequest{}
 
