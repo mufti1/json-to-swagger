@@ -96,9 +96,9 @@ func converToYAML(oneLevelJSON map[string]interface{}) string {
 					properties := (v.(map[string]interface{}))
 					var dataProperties string
 					for k, v := range properties {
-						dataProperties += parse(k, v, 4, 6)
+						dataProperties += parse(k, v, 6, 8)
 					}
-					yamlSchema += fmt.Sprintf("%v:\n  type: object\n  properties:\n%v", k, dataProperties)
+					yamlSchema += fmt.Sprintf("%v:\n  type: array\n  items:\n    type: object\n    properties:\n%v", k, dataProperties)
 					break
 				}
 			}
@@ -106,13 +106,11 @@ func converToYAML(oneLevelJSON map[string]interface{}) string {
 			properties := (v.(map[string]interface{}))
 			var dataProperties string
 			for k, v := range properties {
-				dataProperties += parse(k, v, 4, 6)
+				dataProperties += parse(k, v, 6, 8)
 			}
-			yamlSchema += fmt.Sprintf("%v:\n  type: object\n  properties:\n%v", k, dataProperties)
+			yamlSchema += fmt.Sprintf("%v:\n  type: array\n  items:\n    type: object\n    properties:\n%v", k, dataProperties)
 		}
 	}
-
-	// fmt.Println(yamlSchema)
 
 	clipboard.WriteAll(yamlSchema)
 
@@ -162,9 +160,9 @@ func parse(key interface{}, value interface{}, indentationOne int, indentationTw
 				properties := (v.(map[string]interface{}))
 				var dataProperties string
 				for k, v := range properties {
-					dataProperties += parse(k, v, firstIndentation+4, secondIndentation+4)
+					dataProperties += parse(k, v, firstIndentation+6, secondIndentation+6)
 				}
-				yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: object\n%*sproperties:\n%v", firstIndentation, "", key, secondIndentation, "", secondIndentation, "", dataProperties)
+				yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: array\n%*sitems:\n%*stype: object\n%*sproperties:\n%v", firstIndentation, "", key, secondIndentation, "", secondIndentation, "", secondIndentation+2, "", secondIndentation+2, "", dataProperties)
 				firstIndentation += 2
 				secondIndentation += 2
 				break
@@ -174,9 +172,9 @@ func parse(key interface{}, value interface{}, indentationOne int, indentationTw
 		properties := (value.(map[string]interface{}))
 		var dataProperties string
 		for k, v := range properties {
-			dataProperties += parse(k, v, firstIndentation+4, secondIndentation+4)
+			dataProperties += parse(k, v, firstIndentation+6, secondIndentation+6)
 		}
-		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: object\n%*sproperties:\n%v", firstIndentation, "", key, secondIndentation, "", secondIndentation, "", dataProperties)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: array\n%*sitems:\n%*stype: object\n%*sproperties:\n%v", firstIndentation, "", key, secondIndentation, "", secondIndentation, "", secondIndentation+2, "", secondIndentation+2, "", dataProperties)
 		firstIndentation += 2
 		secondIndentation += 2
 	}
