@@ -106,9 +106,9 @@ func converToYAML(oneLevelJSON map[string]interface{}) string {
 			properties := (v.(map[string]interface{}))
 			var dataProperties string
 			for k, v := range properties {
-				dataProperties += parse(k, v, 6, 8)
+				dataProperties += parse(k, v, 4, 6)
 			}
-			yamlSchema += fmt.Sprintf("%v:\n  type: array\n  items:\n    type: object\n    properties:\n%v", k, dataProperties)
+			yamlSchema += fmt.Sprintf("%v:\n  type: object\n  properties:\n%v", k, dataProperties)
 		}
 	}
 
@@ -172,9 +172,9 @@ func parse(key interface{}, value interface{}, indentationOne int, indentationTw
 		properties := (value.(map[string]interface{}))
 		var dataProperties string
 		for k, v := range properties {
-			dataProperties += parse(k, v, firstIndentation+6, secondIndentation+6)
+			dataProperties += parse(k, v, firstIndentation+4, secondIndentation+4)
 		}
-		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: array\n%*sitems:\n%*stype: object\n%*sproperties:\n%v", firstIndentation, "", key, secondIndentation, "", secondIndentation, "", secondIndentation+2, "", secondIndentation+2, "", dataProperties)
+		yamlSchema += fmt.Sprintf("%*s%v:\n%*stype: object\n%*sproperties:\n%v", firstIndentation, "", key, secondIndentation, "", secondIndentation, "", dataProperties)
 		firstIndentation += 2
 		secondIndentation += 2
 	}
